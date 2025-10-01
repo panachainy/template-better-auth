@@ -7,6 +7,6 @@
 - [ ] Find & Add API Framework (e.g., Express, Fastify)
 - [ ] Add Husky for Git hooks
 - [ ] Implement basic authentication functionality
-- [ ] Set up PostgreSQL database connection & compose.yml (docker compose)
+- [x] Set up PostgreSQL database connection & compose.yml (docker compose)
 - [ ] Integrate [better-auth](https://github.com/your-org/better-auth) for authentication
 - [ ] Try to use react tanstack for auth
