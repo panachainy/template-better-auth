@@ -1,2 +1,2 @@
 echo "Running pre-commit hook..."
-bun run start
+bun run check:fix
