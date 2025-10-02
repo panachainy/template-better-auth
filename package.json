@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "start": "bun run index.ts",
     "dev": "bun run --watch index.ts",
     "check": "biome check .",
@@ -12,6 +13,7 @@
     "lint": "biome lint ."
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "@biomejs/biome": "2.2.4",
     "@types/bun": "latest"
   },
