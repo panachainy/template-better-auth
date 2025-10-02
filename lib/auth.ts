@@ -1,5 +1,5 @@
-import { betterAuth } from "better-auth";
-import { Pool } from "pg";
+import { betterAuth } from 'better-auth'
+import { Pool } from 'pg'
 
 export const auth = betterAuth({
   socialProviders: {
@@ -18,4 +18,4 @@ export const auth = betterAuth({
     user: process.env.POSTGRES_USER || "postgres",
     password: process.env.POSTGRES_PASSWORD || "postgres",
   }),
-});
+})
