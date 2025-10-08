@@ -13,9 +13,9 @@
     "lint": "biome lint ."
   },
   "devDependencies": {
-    "husky": "^9.1.7",
     "@biomejs/biome": "2.2.4",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "husky": "^9.1.7"
   },
   "peerDependencies": {
     "typescript": "^5"
