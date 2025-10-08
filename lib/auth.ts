@@ -1,5 +1,10 @@
 import { betterAuth } from 'better-auth'
 import { Pool } from 'pg'
+import { createLogger } from './logger'
+
+const logger = createLogger('auth')
+
+logger.info('Initializing authentication module')
 
 export const auth = betterAuth({
   socialProviders: {
@@ -12,10 +17,12 @@ export const auth = betterAuth({
     },
   },
   database: new Pool({
-    host: process.env.POSTGRES_HOST || "localhost",
-    port: parseInt(process.env.POSTGRES_PORT || "5432"),
-    database: process.env.POSTGRES_DB || "better_auth",
-    user: process.env.POSTGRES_USER || "postgres",
-    password: process.env.POSTGRES_PASSWORD || "postgres",
+    host: process.env.POSTGRES_HOST || 'localhost',
+    port: parseInt(process.env.POSTGRES_PORT || '5432', 10),
+    database: process.env.POSTGRES_DB || 'better_auth',
+    user: process.env.POSTGRES_USER || 'postgres',
+    password: process.env.POSTGRES_PASSWORD || 'postgres',
   }),
 })
+
+logger.info('Authentication module initialized successfully')
