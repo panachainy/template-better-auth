@@ -15,7 +15,7 @@ A template project for authentication using Better Auth with Hono framework.
 
 ### Prerequisites
 
-- Node.js (v20+) or Bun (v1.2.5+)
+- Bun (v1.2.5+)
 - Docker and Docker Compose
 
 ### Installation
@@ -23,27 +23,23 @@ A template project for authentication using Better Auth with Hono framework.
 1. Clone the repository
 2. Install dependencies:
 
-```bash
-npm install
-# or
-bun install
-```
+    ```bash
+    bun install
+    ```
 
 3. Copy `.env.example` to `.env` and configure your environment variables
 
 4. Start the PostgreSQL database:
 
-```bash
-docker compose up -d
-```
+    ```bash
+    docker compose up -d
+    ```
 
 5. Run the server:
 
-```bash
-npm start
-# or
-bun start
-```
+    ```bash
+    bun start
+    ```
 
 The server will start on `http://localhost:3000`
 
@@ -56,16 +52,23 @@ The server will start on `http://localhost:3000`
 
 ```bash
 # Run in development mode with auto-reload
-npm run dev
+bun run dev
 
 # Run linter
-npm run lint
+bun run lint
 
 # Run formatter
-npm run format
+bun run format
 
 # Check code quality
-npm run check
+bun run check
+
+# Generate sql migration files
+bunx @better-auth/cli@latest generate --output ./lib
+
+bunx @better-auth/cli@latest migrate --config ./lib/auth.ts
+
+bunx @better-auth/cli@latest init
 ```
 
 ## Tasks
