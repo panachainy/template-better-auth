@@ -3,6 +3,9 @@ import type { Session, User } from 'better-auth/types'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { auth } from './lib/auth'
+import { createLogger } from './lib/logger'
+
+const logger = createLogger('server')
 
 type Variables = {
   user: User | null
@@ -10,6 +13,24 @@ type Variables = {
 }
 
 const app = new Hono<{ Variables: Variables }>()
+
+logger.info('Initializing Hono application')
+
+// Request logging middleware
+app.use('*', async (c, next) => {
+  const start = Date.now()
+  const method = c.req.method
+  const path = c.req.path
+
+  logger.info(`Incoming request: ${method} ${path}`)
+
+  await next()
+
+  const duration = Date.now() - start
+  logger.info(
+    `Request completed: ${method} ${path} - ${c.res.status} (${duration}ms)`,
+  )
+})
 
 // Configure CORS for authentication routes
 app.use(
@@ -38,12 +59,13 @@ app.use('*', async (c, next) => {
 })
 
 // Health check route
-app.get('/', (c) => {
+app.get('/healthz', (c) => {
+  logger.info('Health check requested')
   return c.json({ status: 'ok', message: 'Better Auth with Hono is running!' })
 })
 
 const port = parseInt(process.env.PORT || '3000', 10)
-console.log(`Server is running on http://localhost:${port}`)
+logger.info(`Server is running on http://localhost:${port}`)
 
 serve({
   fetch: app.fetch,
