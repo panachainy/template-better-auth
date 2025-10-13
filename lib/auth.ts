@@ -1,11 +1,11 @@
-import { betterAuth } from "better-auth";
-import { Pool } from "pg";
-import { config } from "./config";
-import { createLogger } from "./logger";
+import { betterAuth } from 'better-auth'
+import { Pool } from 'pg'
+import { config } from './config'
+import { createLogger } from './logger'
 
-const logger = createLogger("auth");
+const logger = createLogger('auth')
 
-logger.info("Initializing authentication module");
+logger.info('Initializing authentication module')
 
 export const auth = betterAuth({
   socialProviders: {
@@ -24,6 +24,6 @@ export const auth = betterAuth({
     user: config.postgres.POSTGRES_USER,
     password: config.postgres.POSTGRES_PASSWORD,
   }),
-});
+})
 
-logger.info("Authentication module initialized successfully");
+logger.info('Authentication module initialized successfully')
