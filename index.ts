@@ -1,4 +1,3 @@
-import { serve } from '@hono/node-server'
 import type { Session, User } from 'better-auth/types'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
@@ -67,7 +66,7 @@ app.get('/healthz', (c) => {
 const port = parseInt(process.env.PORT || '3000', 10)
 logger.info(`Server is running on http://localhost:${port}`)
 
-serve({
-  fetch: app.fetch,
+export default {
   port,
-})
+  fetch: app.fetch,
+}
