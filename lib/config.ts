@@ -1,31 +1,36 @@
-export interface ServerConfig {
-  PORT: number
-  CORS_ORIGIN: string
-  LOG_LEVEL: 'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace'
-}
+import { z } from 'zod'
 
-export interface BetterAuthConfig {
-  BETTER_AUTH_SECRET: string
-  BETTER_AUTH_URL: string
-  LINE_CLIENT_ID: string
-  LINE_CLIENT_SECRET: string
-}
+const serverConfigSchema = z.object({
+  PORT: z.number().positive(),
+  CORS_ORIGIN: z.string(),
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']),
+})
 
-export interface PostgresConfig {
-  POSTGRES_USER: string
-  POSTGRES_PASSWORD: string
-  POSTGRES_DB: string
-  POSTGRES_HOST: string
-  POSTGRES_PORT: number
-}
+const betterAuthConfigSchema = z.object({
+  BETTER_AUTH_SECRET: z.string().min(1),
+  BETTER_AUTH_URL: z.string().url(),
+  LINE_CLIENT_ID: z.string().min(1),
+  LINE_CLIENT_SECRET: z.string().min(1),
+})
 
-export interface AppConfig {
-  server: ServerConfig
-  betterAuth: BetterAuthConfig
-  postgres: PostgresConfig
-}
+const postgresConfigSchema = z.object({
+  POSTGRES_USER: z.string().min(1),
+  POSTGRES_PASSWORD: z.string().min(1),
+  POSTGRES_DB: z.string().min(1),
+  POSTGRES_HOST: z.string().min(1),
+  POSTGRES_PORT: z.number().positive(),
+})
 
-export const config: AppConfig = {
+const appConfigSchema = z.object({
+  server: serverConfigSchema,
+  betterAuth: betterAuthConfigSchema,
+  postgres: postgresConfigSchema,
+})
+
+type ServerConfig = z.infer<typeof serverConfigSchema>
+type AppConfig = z.infer<typeof appConfigSchema>
+
+const rawConfig: AppConfig = {
   server: {
     PORT: Number(process.env.PORT) || 3000,
     CORS_ORIGIN: process.env.CORS_ORIGIN || '*',
@@ -38,10 +43,12 @@ export const config: AppConfig = {
     LINE_CLIENT_SECRET: process.env.LINE_CLIENT_SECRET || '',
   },
   postgres: {
-    POSTGRES_USER: process.env.POSTGRES_USER || 'postgres',
+    POSTGRES_USER: process.env.POSTGRES_USER || '',
     POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || '',
-    POSTGRES_DB: process.env.POSTGRES_DB || 'postgres',
-    POSTGRES_HOST: process.env.POSTGRES_HOST || 'localhost',
-    POSTGRES_PORT: Number(process.env.POSTGRES_PORT) || 5432,
+    POSTGRES_DB: process.env.POSTGRES_DB || '',
+    POSTGRES_HOST: process.env.POSTGRES_HOST || '',
+    POSTGRES_PORT: Number(process.env.POSTGRES_PORT),
   },
 }
+
+export const config = appConfigSchema.parse(rawConfig) as AppConfig
