@@ -54,21 +54,14 @@ The server will start on `http://localhost:3000`
 # Run in development mode with auto-reload
 bun run dev
 
-# Run linter
-bun run lint
-
-# Run formatter
-bun run format
-
 # Check code quality
 bun run check
 
-# Generate sql migration files
-bunx @better-auth/cli@latest generate --output ./lib
+# Fix code quality issues
+bun run check:fix
 
+# Migrate sql
 bunx @better-auth/cli@latest migrate --config ./lib/auth.ts
-
-bunx @better-auth/cli@latest init
 ```
 
 ## Tasks
