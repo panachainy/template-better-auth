@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Better Auth</title>
+    <style>
+        :root {
+            --primary-color: #06c755;
+            /* Line Green */
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-social:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-social:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #ef4444;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card">
+        <h1>Welcome Back</h1>
+        p>Sign in to continue to your account</p>
+
+        <button id="lineLoginBtn" class="btn-social">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.019 9.604.391.084.922.258 1.057.592.121.303.079.778.038 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967 1.739-1.992 2.61-4.058 2.61-6.021zM7.438 15.568c0 .41-.335.744-.744.744H4.281c-.41 0-.744-.335-.744-.744v-4.81c0-.41.335-.744.744-.744.41 0 .744.335.744.744v3.322h1.669c.41 0 .744.335.744.744zm3.794 0c0 .41-.335.744-.744.744H9.744c-.41 0-.744-.335-.744-.744v-4.81c0-.41.335-.744.744-.744.41 0 .744.335.744.744v4.81zm4.575 0c0 .41-.335.744-.744.744h-2.413c-.41 0-.744-.335-.744-.744v-4.81c0-.41.335-.744.744-.744.41 0 .744.335.744.744v3.322h1.669c.41 0 .744.335.744.744zm4.538-1.535c0 .41-.335.744-.744.744-.41 0-.744-.335-.744-.744v-1.635l-1.745 2.379c-.045.061-.102.113-.167.152a.746.746 0 0 1-.413.123c-.41 0-.744-.335-.744-.744v-4.81c0-.41.335-.744.744-.744.41 0 .744.335.744.744v1.635l1.745-2.379c.045-.061.102-.113.167-.152a.745.745 0 0 1 .413-.123c.41 0 .744.335.744.744v4.81z" />
+            </svg>
+            Sign in with Line
+        </button>
+
+        <div id="error" class="error-message"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3001/api/auth';
+
+        document.getElementById('lineLoginBtn').addEventListener('click', async () => {
+            const errorDiv = document.getElementById('error');
+            errorDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/sign-in/social`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        provider: 'line',
+                        callbackURL: window.location.origin // Redirect back to this page or a dashboard
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to initiate login');
+                }
+
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error('No redirect URL returned');
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                errorDiv.textContent = err.message;
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

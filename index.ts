@@ -2,6 +2,7 @@ import type { Session, User } from 'better-auth/types'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { auth } from './lib/auth'
+import { config } from './lib/config'
 import { createLogger } from './lib/logger'
 
 const logger = createLogger('server')
@@ -35,7 +36,7 @@ app.use('*', async (c, next) => {
 app.use(
   '/api/auth/*',
   cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3001',
+    origin: config.server.CORS_ORIGIN,
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
     exposeHeaders: ['Content-Length'],
@@ -63,7 +64,7 @@ app.get('/healthz', (c) => {
   return c.json({ status: 'ok', message: 'Better Auth with Hono is running!' })
 })
 
-const port = parseInt(process.env.PORT || '3000', 10)
+const port = config.server.PORT
 logger.info(`Server is running on http://localhost:${port}`)
 
 export default {
