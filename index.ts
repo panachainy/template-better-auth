@@ -34,7 +34,7 @@ app.use('*', async (c, next) => {
 
 // Configure CORS for authentication routes
 app.use(
-  '/api/auth/*',
+  '/api/v1/auth/*',
   cors({
     origin: config.server.corsOrigin,
     allowHeaders: ['Content-Type', 'Authorization'],
@@ -46,7 +46,7 @@ app.use(
 )
 
 // Mount the Better Auth handler
-app.on(['POST', 'GET'], '/api/auth/*', (c) => {
+app.on(['POST', 'GET'], '/api/v1/auth/*', (c) => {
   return auth.handler(c.req.raw)
 })
 

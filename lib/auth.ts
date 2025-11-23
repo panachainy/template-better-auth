@@ -8,6 +8,8 @@ const logger = createLogger('auth')
 logger.info('Initializing authentication module')
 
 export const auth = betterAuth({
+  baseURL: config.betterAuth.url,
+  basePath: '/api/v1/auth',
   socialProviders: {
     line: {
       clientId: config.betterAuth.lineClientId,

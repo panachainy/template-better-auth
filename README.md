@@ -45,8 +45,8 @@ The server will start on `http://localhost:3000`
 
 ### API Endpoints
 
-- `GET /` - Health check endpoint
-- `/api/auth/*` - Better Auth endpoints (sign-in, sign-up, etc.)
+- `GET /healthz` - Health check endpoint
+- `/api/v1/auth/*` - Better Auth endpoints (sign-in, sign-up, etc.)
 
 ### Development
 
