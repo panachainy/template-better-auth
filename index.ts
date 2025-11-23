@@ -45,17 +45,18 @@ app.use(
   }),
 )
 
-// Mount the Better Auth handler
-app.on(['POST', 'GET'], '/api/v1/auth/*', (c) => {
-  return auth.handler(c.req.raw)
-})
-
 // Middleware to add session and user context
 app.use('*', async (c, next) => {
   const session = await auth.api.getSession({ headers: c.req.raw.headers })
   c.set('user', session ? session.user : null)
   c.set('session', session ? session.session : null)
+
   return next()
+})
+
+// Mount the Better Auth handler
+app.on(['POST', 'GET'], '/api/v1/auth/*', (c) => {
+  return auth.handler(c.req.raw)
 })
 
 // Health check route
