@@ -21,6 +21,7 @@ export const auth = betterAuth({
           `Anonymous user linked to social account: anonymousUserId=${anonymousUser.user.id}, newUserId=${newUser.user.id}`,
         )
       },
+      // disableDeleteAnonymousUser: true,
     }),
   ],
   account: {
@@ -42,7 +43,6 @@ export const auth = betterAuth({
       ...(config.betterAuth.lineScopes && {
         scope: config.betterAuth.lineScopes,
       }),
-      // scopes are prefilled: ["openid","profile","email"]. Append if needed
     },
   },
   trustedOrigins: config.betterAuth.trustedOrigins,
