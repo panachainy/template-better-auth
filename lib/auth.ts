@@ -12,8 +12,9 @@ export const auth = betterAuth({
     line: {
       clientId: config.betterAuth.lineClientId,
       clientSecret: config.betterAuth.lineClientSecret,
-      // Optional: override redirect if needed
-      // redirectURI: "https://your.app/api/auth/callback/line",
+      ...(config.betterAuth.lineCallbackUrl && {
+        redirectURI: config.betterAuth.lineCallbackUrl,
+      }),
       // scopes are prefilled: ["openid","profile","email"]. Append if needed
     },
   },

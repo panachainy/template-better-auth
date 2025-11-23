@@ -20,6 +20,7 @@ const betterAuthConfigSchema = z.object({
     .transform((val) =>
       val ? val.split(',').map((origin) => origin.trim()) : [],
     ),
+  lineCallbackUrl: z.string().optional(),
 })
 
 const postgresConfigSchema = z.object({
@@ -53,6 +54,7 @@ const rawConfig: AppConfigInput = {
     lineClientId: process.env.LINE_CLIENT_ID || '',
     lineClientSecret: process.env.LINE_CLIENT_SECRET || '',
     trustedOrigins: process.env.TRUSTED_ORIGINS,
+    lineCallbackUrl: process.env.LINE_CALLBACK_URL,
   },
   postgres: {
     user: process.env.POSTGRES_USER || '',
