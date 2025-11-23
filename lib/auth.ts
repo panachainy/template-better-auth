@@ -1,4 +1,5 @@
 import { betterAuth } from 'better-auth'
+import { openAPI } from 'better-auth/plugins'
 import { Pool } from 'pg'
 import { config } from './config'
 import { createLogger } from './logger'
@@ -8,6 +9,7 @@ const logger = createLogger('auth')
 logger.info('Initializing authentication module')
 
 export const auth = betterAuth({
+  plugins: [openAPI()],
   baseURL: config.betterAuth.url,
   basePath: '/api/v1/auth',
   socialProviders: {
