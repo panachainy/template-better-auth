@@ -78,6 +78,9 @@ if (config.server.isDebugMode) {
     },
   }
   logger.info({ config: safeConfig }, 'Config')
+
+  const schema = await auth.api.generateOpenAPISchema()
+  console.log(schema)
 }
 
 const port = config.server.port
