@@ -15,6 +15,9 @@ export const auth = betterAuth({
       ...(config.betterAuth.lineCallbackUrl && {
         redirectURI: config.betterAuth.lineCallbackUrl,
       }),
+      ...(config.betterAuth.lineScopes && {
+        scope: config.betterAuth.lineScopes,
+      }),
       // scopes are prefilled: ["openid","profile","email"]. Append if needed
     },
   },
