@@ -2,8 +2,11 @@ import { z } from 'zod'
 
 const serverConfigSchema = z.object({
   PORT: z.number().positive(),
-  CORS_ORIGIN: z.string(),
+  CORS_ORIGIN: z
+    .string()
+    .transform((val) => val.split(',').map((origin) => origin.trim())),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']),
+  isDebugMode: z.boolean().default(false),
 })
 
 const betterAuthConfigSchema = z.object({
@@ -11,6 +14,12 @@ const betterAuthConfigSchema = z.object({
   BETTER_AUTH_URL: z.string().url(),
   LINE_CLIENT_ID: z.string().min(1),
   LINE_CLIENT_SECRET: z.string().min(1),
+  TRUSTED_ORIGINS: z
+    .string()
+    .optional()
+    .transform((val) =>
+      val ? val.split(',').map((origin) => origin.trim()) : [],
+    ),
 })
 
 const postgresConfigSchema = z.object({
@@ -29,18 +38,21 @@ const appConfigSchema = z.object({
 
 type ServerConfig = z.infer<typeof serverConfigSchema>
 type AppConfig = z.infer<typeof appConfigSchema>
+type AppConfigInput = z.input<typeof appConfigSchema>
 
-const rawConfig: AppConfig = {
+const rawConfig: AppConfigInput = {
   server: {
     PORT: Number(process.env.PORT) || 3000,
     CORS_ORIGIN: process.env.CORS_ORIGIN || '*',
     LOG_LEVEL: (process.env.LOG_LEVEL as ServerConfig['LOG_LEVEL']) || 'info',
+    isDebugMode: process.env.IS_DEBUG_MODE === 'true',
   },
   betterAuth: {
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET || '',
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL || '',
     LINE_CLIENT_ID: process.env.LINE_CLIENT_ID || '',
     LINE_CLIENT_SECRET: process.env.LINE_CLIENT_SECRET || '',
+    TRUSTED_ORIGINS: process.env.TRUSTED_ORIGINS,
   },
   postgres: {
     POSTGRES_USER: process.env.POSTGRES_USER || '',

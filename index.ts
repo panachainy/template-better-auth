@@ -64,6 +64,22 @@ app.get('/healthz', (c) => {
   return c.json({ status: 'ok', message: 'Better Auth with Hono is running!' })
 })
 
+if (config.server.isDebugMode) {
+  const safeConfig = {
+    ...config,
+    betterAuth: {
+      ...config.betterAuth,
+      BETTER_AUTH_SECRET: '***',
+      LINE_CLIENT_SECRET: '***',
+    },
+    postgres: {
+      ...config.postgres,
+      POSTGRES_PASSWORD: '***',
+    },
+  }
+  logger.info({ config: safeConfig }, 'Config')
+}
+
 const port = config.server.PORT
 logger.info(`Server is running on http://localhost:${port}`)
 

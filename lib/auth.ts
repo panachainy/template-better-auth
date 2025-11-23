@@ -17,6 +17,7 @@ export const auth = betterAuth({
       // scopes are prefilled: ["openid","profile","email"]. Append if needed
     },
   },
+  trustedOrigins: config.betterAuth.TRUSTED_ORIGINS,
   database: new Pool({
     host: config.postgres.POSTGRES_HOST,
     port: config.postgres.POSTGRES_PORT,
