@@ -1,7 +1,8 @@
 import { createAuthClient } from 'better-auth/client'
 
 const authClient = createAuthClient({
-  baseURL: 'http://localhost:3000', // Replace with your auth server URL
+  baseURL: 'http://localhost:3001', // Replace with your auth server URL
+  basePath: '/api/v1/auth',
 })
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
       </button>
       <button type="button" onClick={() => handleOAuthLogin('github')}>
         Login with GitHub
+      </button>
+      <button type="button" onClick={() => handleOAuthLogin('line')}>
+        Login with LINE
       </button>
       {/* Add more providers as needed */}
     </div>

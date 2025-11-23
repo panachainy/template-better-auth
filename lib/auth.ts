@@ -11,7 +11,7 @@ logger.info('Initializing authentication module')
 export const auth = betterAuth({
   plugins: [openAPI()],
   baseURL: config.betterAuth.url,
-  basePath: '/api/v1/auth',
+  basePath: config.betterAuth.basePath,
   socialProviders: {
     line: {
       clientId: config.betterAuth.lineClientId,

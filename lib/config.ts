@@ -12,6 +12,7 @@ const serverConfigSchema = z.object({
 const betterAuthConfigSchema = z.object({
   secret: z.string().min(1),
   url: z.string().url(),
+  basePath: z.string().default('/api/v1/auth'),
   lineClientId: z.string().min(1),
   lineClientSecret: z.string().min(1),
   trustedOrigins: z
@@ -57,6 +58,7 @@ const rawConfig: AppConfigInput = {
   betterAuth: {
     secret: process.env.BETTER_AUTH_SECRET || '',
     url: process.env.BETTER_AUTH_URL || '',
+    basePath: process.env.BETTER_AUTH_BASE_PATH || '/api/v1/auth',
     lineClientId: process.env.LINE_CLIENT_ID || '',
     lineClientSecret: process.env.LINE_CLIENT_SECRET || '',
     trustedOrigins: process.env.TRUSTED_ORIGINS,
