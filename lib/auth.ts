@@ -10,20 +10,20 @@ logger.info('Initializing authentication module')
 export const auth = betterAuth({
   socialProviders: {
     line: {
-      clientId: config.betterAuth.LINE_CLIENT_ID,
-      clientSecret: config.betterAuth.LINE_CLIENT_SECRET,
+      clientId: config.betterAuth.lineClientId,
+      clientSecret: config.betterAuth.lineClientSecret,
       // Optional: override redirect if needed
       // redirectURI: "https://your.app/api/auth/callback/line",
       // scopes are prefilled: ["openid","profile","email"]. Append if needed
     },
   },
-  trustedOrigins: config.betterAuth.TRUSTED_ORIGINS,
+  trustedOrigins: config.betterAuth.trustedOrigins,
   database: new Pool({
-    host: config.postgres.POSTGRES_HOST,
-    port: config.postgres.POSTGRES_PORT,
-    database: config.postgres.POSTGRES_DB,
-    user: config.postgres.POSTGRES_USER,
-    password: config.postgres.POSTGRES_PASSWORD,
+    host: config.postgres.host,
+    port: config.postgres.port,
+    database: config.postgres.db,
+    user: config.postgres.user,
+    password: config.postgres.password,
   }),
 })
 

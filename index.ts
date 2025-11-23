@@ -36,7 +36,7 @@ app.use('*', async (c, next) => {
 app.use(
   '/api/auth/*',
   cors({
-    origin: config.server.CORS_ORIGIN,
+    origin: config.server.corsOrigin,
     allowHeaders: ['Content-Type', 'Authorization'],
     allowMethods: ['POST', 'GET', 'OPTIONS'],
     exposeHeaders: ['Content-Length'],
@@ -69,18 +69,18 @@ if (config.server.isDebugMode) {
     ...config,
     betterAuth: {
       ...config.betterAuth,
-      BETTER_AUTH_SECRET: '***',
-      LINE_CLIENT_SECRET: '***',
+      secret: '***',
+      lineClientSecret: '***',
     },
     postgres: {
       ...config.postgres,
-      POSTGRES_PASSWORD: '***',
+      password: '***',
     },
   }
   logger.info({ config: safeConfig }, 'Config')
 }
 
-const port = config.server.PORT
+const port = config.server.port
 logger.info(`Server is running on http://localhost:${port}`)
 
 export default {
