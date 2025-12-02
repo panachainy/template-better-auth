@@ -30,6 +30,11 @@ const betterAuthConfigSchema = z.object({
     .transform((val) =>
       val ? val.split(',').map((scope) => scope.trim()) : undefined,
     ),
+  accountLinkingEnabled: z.boolean().default(true),
+  accountLinkingAllowDifferentEmails: z.boolean().default(true),
+  accountLinkingTrustedProviders: z
+    .string()
+    .transform((val) => val.split(',').map((provider) => provider.trim())),
 })
 
 const postgresConfigSchema = z.object({
@@ -68,6 +73,11 @@ const rawConfig: AppConfigInput = {
     trustedOrigins: process.env.TRUSTED_ORIGINS,
     lineCallbackUrl: process.env.LINE_CALLBACK_URL,
     lineScopes: process.env.LINE_SCOPES,
+    accountLinkingEnabled: process.env.ACCOUNT_LINKING_ENABLED === 'true',
+    accountLinkingAllowDifferentEmails:
+      process.env.ACCOUNT_LINKING_ALLOW_DIFFERENT_EMAILS !== 'false',
+    accountLinkingTrustedProviders:
+      process.env.ACCOUNT_LINKING_TRUSTED_PROVIDERS || 'line,github',
   },
   postgres: {
     user: process.env.POSTGRES_USER || '',

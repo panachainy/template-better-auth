@@ -26,9 +26,10 @@ export const auth = betterAuth({
   ],
   account: {
     accountLinking: {
-      enabled: true,
-      allowDifferentEmails: true, // but this doesn’t bypass email requirement fully
-      trustedProviders: ['line'],
+      enabled: config.betterAuth.accountLinkingEnabled,
+      allowDifferentEmails:
+        config.betterAuth.accountLinkingAllowDifferentEmails,
+      trustedProviders: config.betterAuth.accountLinkingTrustedProviders,
     },
   },
   baseURL: config.betterAuth.url,

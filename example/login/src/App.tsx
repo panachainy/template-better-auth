@@ -60,13 +60,37 @@ function App() {
   return (
     <div>
       <h1>OAuth Login Example</h1>
-      <button type="button" onClick={() => handleOAuthLogin('line')}>
-        Login with LINE
-      </button>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', justifyContent: 'center' }}>
+        <button
+          type="button"
+          onClick={() => handleOAuthLogin('line')}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#00C300',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          Login with LINE
+        </button>
 
-      <button type="button" onClick={() => handleOAuthLogin('github')}>
-        Login with GitHub
-      </button>
+        <button
+          type="button"
+          onClick={() => handleOAuthLogin('github')}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#24292e',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          Login with GitHub
+        </button>
+      </div>
 
       <h1>Other Login Example</h1>
 
