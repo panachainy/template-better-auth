@@ -25,6 +25,7 @@ function App() {
     try {
       const result = await authClient.signIn.social({
         provider: provider,
+        callbackURL: "http://localhost:3000/dashboard",
       })
       console.log('Login successful:', result)
       // Refetch session after login
