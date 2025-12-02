@@ -1,5 +1,7 @@
 import { betterAuth } from 'better-auth'
+import { anonymous, openAPI } from 'better-auth/plugins'
 import { Pool } from 'pg'
+import { config } from './config'
 import { createLogger } from './logger'
 
 const logger = createLogger('auth')
@@ -7,21 +9,57 @@ const logger = createLogger('auth')
 logger.info('Initializing authentication module')
 
 export const auth = betterAuth({
-  socialProviders: {
-    line: {
-      clientId: process.env.LINE_CLIENT_ID as string,
-      clientSecret: process.env.LINE_CLIENT_SECRET as string,
-      // Optional: override redirect if needed
-      // redirectURI: "https://your.app/api/auth/callback/line",
-      // scopes are prefilled: ["openid","profile","email"]. Append if needed
+  plugins: [
+    openAPI(),
+    anonymous({
+      // generate a dummy email for the anonymous user
+      emailDomainName: 'my-app.local',
+      onLinkAccount: async ({ anonymousUser, newUser }) => {
+        // called when the anonymous user later links a social login (e.g. LINE)
+        // you can merge accounts or update email here
+        logger.info(
+          `Anonymous user linked to social account: anonymousUserId=${anonymousUser.user.id}, newUserId=${newUser.user.id}`,
+        )
+      },
+      // disableDeleteAnonymousUser: true,
+    }),
+  ],
+  account: {
+    accountLinking: {
+      enabled: config.betterAuth.accountLinkingEnabled,
+      allowDifferentEmails:
+        config.betterAuth.accountLinkingAllowDifferentEmails,
+      trustedProviders: config.betterAuth.accountLinkingTrustedProviders,
     },
   },
+  baseURL: config.betterAuth.url,
+  basePath: config.betterAuth.basePath,
+  socialProviders: {
+    line: {
+      clientId: config.betterAuth.lineClientId,
+      clientSecret: config.betterAuth.lineClientSecret,
+      ...(config.betterAuth.lineCallbackUrl && {
+        redirectURI: config.betterAuth.lineCallbackUrl,
+      }),
+      ...(config.betterAuth.lineScopes && {
+        scope: config.betterAuth.lineScopes,
+      }),
+    },
+    ...(config.betterAuth.githubClientId &&
+      config.betterAuth.githubClientSecret && {
+        github: {
+          clientId: config.betterAuth.githubClientId,
+          clientSecret: config.betterAuth.githubClientSecret,
+        },
+      }),
+  },
+  trustedOrigins: config.betterAuth.trustedOrigins,
   database: new Pool({
-    host: process.env.POSTGRES_HOST || 'localhost',
-    port: parseInt(process.env.POSTGRES_PORT || '5432', 10),
-    database: process.env.POSTGRES_DB || 'better_auth',
-    user: process.env.POSTGRES_USER || 'postgres',
-    password: process.env.POSTGRES_PASSWORD || 'postgres',
+    host: config.postgres.host,
+    port: config.postgres.port,
+    database: config.postgres.db,
+    user: config.postgres.user,
+    password: config.postgres.password,
   }),
 })
 
