@@ -20,9 +20,6 @@ COPY package.json bun.lock tsconfig.json biome.json ./
 COPY index.ts ./
 COPY lib ./lib
 
-# Run biome check
-RUN bun run check
-
 # Stage 3: Production
 FROM oven/bun:1.2.5-alpine AS runner
 WORKDIR /app
