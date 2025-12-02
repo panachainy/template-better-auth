@@ -44,6 +44,13 @@ export const auth = betterAuth({
         scope: config.betterAuth.lineScopes,
       }),
     },
+    ...(config.betterAuth.githubClientId &&
+      config.betterAuth.githubClientSecret && {
+        github: {
+          clientId: config.betterAuth.githubClientId,
+          clientSecret: config.betterAuth.githubClientSecret,
+        },
+      }),
   },
   trustedOrigins: config.betterAuth.trustedOrigins,
   database: new Pool({

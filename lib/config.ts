@@ -15,6 +15,8 @@ const betterAuthConfigSchema = z.object({
   basePath: z.string().default('/api/v1/auth'),
   lineClientId: z.string().min(1),
   lineClientSecret: z.string().min(1),
+  githubClientId: z.string().optional(),
+  githubClientSecret: z.string().optional(),
   trustedOrigins: z
     .string()
     .optional()
@@ -61,6 +63,8 @@ const rawConfig: AppConfigInput = {
     basePath: process.env.BETTER_AUTH_BASE_PATH || '/api/v1/auth',
     lineClientId: process.env.LINE_CLIENT_ID || '',
     lineClientSecret: process.env.LINE_CLIENT_SECRET || '',
+    githubClientId: process.env.GITHUB_CLIENT_ID,
+    githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
     trustedOrigins: process.env.TRUSTED_ORIGINS,
     lineCallbackUrl: process.env.LINE_CALLBACK_URL,
     lineScopes: process.env.LINE_SCOPES,

@@ -64,6 +64,10 @@ function App() {
         Login with LINE
       </button>
 
+      <button type="button" onClick={() => handleOAuthLogin('github')}>
+        Login with GitHub
+      </button>
+
       <h1>Other Login Example</h1>
 
       <button type="button" onClick={() => handleAnonymousLogin()}>
@@ -81,7 +85,6 @@ function App() {
           </button>
         </div>
       )}
-      {/* Add more providers as needed */}
     </div>
   )
 }
