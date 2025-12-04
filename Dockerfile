@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile for Bun application
 
 # Stage 1: Dependencies
-FROM oven/bun:1.2.5-alpine AS deps
+FROM oven/bun:1.3.3-alpine AS deps
 WORKDIR /app
 
 # Copy package files
@@ -11,7 +11,7 @@ COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 # Stage 2: Build
-FROM oven/bun:1.2.5-alpine AS builder
+FROM oven/bun:1.3.3-alpine AS builder
 WORKDIR /app
 
 # Copy dependencies from deps stage
@@ -21,7 +21,7 @@ COPY index.ts ./
 COPY lib ./lib
 
 # Stage 3: Production
-FROM oven/bun:1.2.5-alpine AS runner
+FROM oven/bun:1.3.3-alpine AS runner
 WORKDIR /app
 
 # Set to production

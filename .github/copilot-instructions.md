@@ -8,7 +8,7 @@ This is a **Bun-based authentication template** using Better Auth with Hono fram
 
 ## Runtime & Tooling
 
-- **Runtime**: Bun v1.2.5+ (NOT Node.js). Use `bun` commands, not `npm`/`yarn`
+- **Runtime**: Bun v1.3.3+ (NOT Node.js). Use `bun` commands, not `npm`/`yarn`
 - **Package manager**: `bun install`, `bun add`, `bun remove`
 - **Code quality**: Biome (NOT ESLint/Prettier) - use `bun run check:fix` to format/lint
 - **Dev workflow**: `bun run dev` for hot-reload, `bun start` for production-like run

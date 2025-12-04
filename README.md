@@ -15,7 +15,7 @@ A template project for authentication using Better Auth with Hono framework.
 
 ### Prerequisites
 
-- Bun (v1.2.5+)
+- Bun (v1.3.3+)
 - Docker and Docker Compose
 
 ### Installation
