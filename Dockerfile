@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json bun.lock ./
 
 # Install dependencies (production only for final image)
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --production --ignore-scripts
 
 # Stage 2: Build
 FROM oven/bun:1.3.3-alpine AS builder
@@ -19,6 +19,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY package.json bun.lock tsconfig.json biome.json ./
 COPY index.ts ./
 COPY lib ./lib
+
+# Build the application
+RUN bun run build
 
 # Stage 3: Production
 FROM oven/bun:1.3.3-alpine AS runner
@@ -31,11 +34,8 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 bunuser
 
-# Copy necessary files
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/index.ts ./
-COPY --from=builder /app/lib ./lib
+# Copy the built application
+COPY --from=builder /app/dist/index.js ./
 
 # Switch to non-root user
 USER bunuser
@@ -44,4 +44,4 @@ USER bunuser
 EXPOSE 3000
 
 # Start the application
-CMD ["bun", "run", "start"]
+CMD ["bun", "index.js"]
