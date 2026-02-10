@@ -1,5 +1,5 @@
 import { betterAuth } from 'better-auth'
-import { anonymous, openAPI } from 'better-auth/plugins'
+import { anonymous, oidcProvider, openAPI } from 'better-auth/plugins'
 import { Pool } from 'pg'
 import { config } from './config'
 import { createLogger } from './logger'
@@ -11,6 +11,9 @@ logger.info('Initializing authentication module')
 export const auth = betterAuth({
   plugins: [
     openAPI(),
+    oidcProvider({
+      loginPage: '/login', // Required for OIDC provider
+    }),
     anonymous({
       // generate a dummy email for the anonymous user
       emailDomainName: 'my-app.local',
